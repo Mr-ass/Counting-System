@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Counting System</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h2 id="title">Counting System</h2>
+    <form method="POST" enctype="multipart/form-data" action="/detect">
+        <input type="file" id="imageFile" name="file" onchange="displayImage()">
+        <input id="button_detect" class="button" type="submit" value="Start Detection">
+            <a href="/">
+        <button id="recheck" class="button" type="button" >Recheck</button>
+    </a>
+    </form>
+    <!-- 显示检测结果 -->
+    <img id="result_show" src="data:;base64,{{ detect_stream }}">
+    <br />
+    <!-- 使用3×2表格框表示文本 -->
+    <table id="results_table">
+        <tr>
+            <td><input id="Detected_Result" type="text" value="Total: {{ num }}" readonly></td>
+        </tr>
+        <tr>
+            <td><input id="Detected_Result1" type="text" value="Density: {{ density }} /cm²" readonly></td>
+        </tr>
+        <tr>
+            <td><input id="Detected_Result2" type="text" value="Grade: {{ grade }}" readonly></td>
+        </tr>
+    </table>
+
+    <style>
+        #title {
+            text-align: left;
+            color: black;
+            font-size: x-large;
+            margin-left: 20px;
+            margin-block-start: 0px;
+            margin-block-end: 0px;
+            background-color: cadetblue;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            max-width: 300px;
+            height: 40px;
+            background-color: white;
+            font-size: larger;
+            margin-top: 5px;
+            margin-left: 20px;
+        }
+
+        input[type="text"] {
+            font-size: 25px;
+            width: 100%;
+            height: 40px;
+            background-color: transparent;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        #result_show {
+            height: 400px;
+            width: 400px;
+<!--            margin-left: 20px;-->
+        }
+
+        #recheck{
+            width: 120px;
+            height: 40px;
+            font-size: larger;
+            margin: 0 10px;
+            background-color: skyblue;
+            margin-left: 20px;
+        }
+
+        #button_detect{
+            width: 180px;
+            height: 40px;
+            font-size: larger;
+            margin: 0 10px;
+            background-color: skyblue;
+            margin-left: 20px;
+        }
+
+        #Detected_Result, #Detected_Result1,#Detected_Result2{
+            font-size: 25px;
+            width: 100%;
+            height: 40px;
+            margin-top: 2px;
+<!--            margin-left: 20px;-->
+        }
+    </style>
+
+    <script>
+        function displayImage() {
+            var fileInput = document.getElementById("imageFile");
+            var resultShow = document.getElementById("result_show");
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                resultShow.src = e.target.result;
+            };
+        }
+    </script>
+</body>
+</html>
